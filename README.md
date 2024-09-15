@@ -1,6 +1,6 @@
 # OpenGL Test
 
-[opengl-learn](https://github.com/HatsuSixty/opengl-learn), the sequel.  
+[opengl-learn](https://github.com/HatsuSixty/opengl-learn), the sequel.
 
 This one features more advanced OpenGL bindings that use dynamically allocated vertex and index buffers, in a way that allows multiple `push_*()`s and `clear()`s per frame, without big performance overheads due to buffer reallocation.
 
