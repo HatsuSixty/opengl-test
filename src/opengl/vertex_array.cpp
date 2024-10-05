@@ -45,8 +45,7 @@ void VertexArray::unbind_all() const
 
 VertexBuffer* VertexArray::bind_vertex_buffer(const VertexLayout& layout)
 {
-    VertexBuffer* vertex_buffer = 
-        new VertexBuffer(VertexBuffer::bind_new(layout));
+    VertexBuffer* vertex_buffer = new VertexBuffer(VertexBuffer::bind_new(layout));
 
     m_vertex_buffers.push_back(vertex_buffer);
 
@@ -55,8 +54,7 @@ VertexBuffer* VertexArray::bind_vertex_buffer(const VertexLayout& layout)
 
 IndexBuffer* VertexArray::bind_index_buffer()
 {
-    IndexBuffer* index_buffer =
-        new IndexBuffer(IndexBuffer::bind_new());
+    IndexBuffer* index_buffer = new IndexBuffer(IndexBuffer::bind_new());
 
     m_index_buffers.push_back(index_buffer);
 

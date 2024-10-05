@@ -11,7 +11,7 @@ class Shader {
 private:
     GLuint m_id;
     bool m_valid = true;
-    
+
     std::unordered_map<std::string, int> m_locations;
 
     int get_uniform_location(const std::string& name);
@@ -27,7 +27,7 @@ public:
     void set_uniform(const std::string& name,
                      float x, float y, float z, float w);
     void set_uniform(const std::string& name,
-                    float x, float y, float z);
+                     float x, float y, float z);
     void set_uniform(const std::string& name, int x);
 };
 

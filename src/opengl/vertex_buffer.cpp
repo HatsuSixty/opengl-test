@@ -19,11 +19,11 @@ VertexBuffer VertexBuffer::bind_new(const VertexLayout& layout)
         const VertexAttribute& attribute = layout.attributes[i];
 
         gl(EnableVertexAttribArray, i);
-        gl(VertexAttribPointer, i, attribute.component_count, 
-                                   attribute.component.type, 
-                                   attribute.normalized, 
-                                   layout.stride, 
-                                   reinterpret_cast<GLvoid*>(attribute.offset));
+        gl(VertexAttribPointer, i, attribute.component_count,
+           attribute.component.type,
+           attribute.normalized,
+           layout.stride,
+           reinterpret_cast<GLvoid*>(attribute.offset));
     }
 
     return vertex_buffer;
@@ -79,12 +79,11 @@ void VertexBuffer::push_vertex(const void* data, std::size_t data_size)
     m_size += data_size;
 }
 
-void VertexBuffer::set_attribute(int vertex_index, int attribute_index, 
+void VertexBuffer::set_attribute(int vertex_index, int attribute_index,
                                  const void* data, std::size_t data_size)
 {
     const VertexAttribute& attribute = m_layout.attributes[attribute_index];
-    const auto attribute_size =
-        attribute.component_count * attribute.component.size;
+    const auto attribute_size = attribute.component_count * attribute.component.size;
 
     if (data_size != attribute_size) {
         std::cerr << "FATAL ERROR: set_attribute: "
@@ -93,7 +92,7 @@ void VertexBuffer::set_attribute(int vertex_index, int attribute_index,
     }
 
     gl(BufferSubData, GL_ARRAY_BUFFER, vertex_index * m_layout.stride + attribute.offset,
-                      data_size, data);
+       data_size, data);
 }
 
 }

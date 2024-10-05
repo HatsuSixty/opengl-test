@@ -4,8 +4,8 @@
 
 #include <GL/glew.h>
 
-#include "opengl/vertex_buffer.hpp"
 #include "opengl/index_buffer.hpp"
+#include "opengl/vertex_buffer.hpp"
 
 namespace GL {
 
@@ -24,7 +24,7 @@ public:
     void unbind() const;
 
     void unbind_all() const;
-    
+
     VertexBuffer* bind_vertex_buffer(const VertexLayout& layout);
     IndexBuffer* bind_index_buffer();
 };

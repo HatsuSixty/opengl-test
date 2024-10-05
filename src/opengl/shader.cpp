@@ -1,8 +1,8 @@
 #include "opengl/shader.hpp"
 
 #include <fstream>
-#include <string>
 #include <iostream>
+#include <string>
 
 #include "opengl/gl_errors.hpp"
 #include "opengl/shader.hpp"
@@ -39,10 +39,10 @@ static ShaderSources parse_shader(const std::string& path)
             fragment_source.append("\n");
         }
     }
-    
+
     return (ShaderSources) {
         .vertex = vertex_source,
-        .fragment = fragment_source,        
+        .fragment = fragment_source,
     };
 }
 
@@ -50,7 +50,7 @@ static GLuint compile_shader(GLenum type, const std::string& source)
 {
     GLuint id;
     gl_call(id = glCreateShader(type));
-    
+
     const char* c_source = source.c_str();
     gl(ShaderSource, id, 1, &c_source, nullptr);
     gl(CompileShader, id);
@@ -65,10 +65,9 @@ static GLuint compile_shader(GLenum type, const std::string& source)
         char* error = (char*)alloca(error_length);
         gl(GetShaderInfoLog, id, error_length, &error_length, error);
 
-        const char* shader_type = 
-            type == GL_VERTEX_SHADER ? "vertex" : "fragment";
+        const char* shader_type = type == GL_VERTEX_SHADER ? "vertex" : "fragment";
 
-        std::cerr << "ERROR: " << shader_type << " shader compilation: " 
+        std::cerr << "ERROR: " << shader_type << " shader compilation: "
                   << error;
 
         gl(DeleteShader, id);
@@ -103,19 +102,19 @@ Shader Shader::bind_new(const std::string& path)
 
     gl_call(shader.m_id = glCreateProgram());
 
-    GLuint vert_shader = compile_shader(GL_VERTEX_SHADER, 
+    GLuint vert_shader = compile_shader(GL_VERTEX_SHADER,
                                         shader_sources.vertex);
     if (vert_shader == 0) {
         gl(DeleteProgram, shader.m_id);
         shader.m_valid = false;
     }
 
-    GLuint frag_shader = compile_shader(GL_FRAGMENT_SHADER, 
+    GLuint frag_shader = compile_shader(GL_FRAGMENT_SHADER,
                                         shader_sources.fragment);
     if (frag_shader == 0) {
         gl(DeleteProgram, shader.m_id);
         shader.m_valid = false;
-    }    
+    }
 
     gl(AttachShader, shader.m_id, vert_shader);
     gl(AttachShader, shader.m_id, frag_shader);

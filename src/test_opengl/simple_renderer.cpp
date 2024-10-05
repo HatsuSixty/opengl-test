@@ -8,10 +8,10 @@
 #include "stb_image.h"
 
 #include "opengl/gl_errors.hpp"
-#include "opengl/vertex_array.hpp"
-#include "opengl/vertex_buffer.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/texture.hpp"
+#include "opengl/vertex_array.hpp"
+#include "opengl/vertex_buffer.hpp"
 
 bool prev_keys_pressed[GLFW_KEY_LAST] = { false };
 bool keys_pressed[GLFW_KEY_LAST] = { false };
@@ -51,7 +51,7 @@ static GL::Texture read_texture_from_file(const std::string& filepath)
     int components;
     unsigned char* pixels = stbi_load(filepath.c_str(), &width, &height, &components, 4);
 
-    auto texture = GL::Texture::new_texture(pixels, width, height, 
+    auto texture = GL::Texture::new_texture(pixels, width, height,
                                             GL::PixelFormat::R8G8B8A8,
                                             GL::TextureType::TWO_DIMS);
 
@@ -90,37 +90,27 @@ public:
 
         renderer.m_va = GL::VertexArray::bind_new();
 
-
         GL::VertexLayout vertex_layout;
         vertex_layout.add_attribute<float>(2, false);
         vertex_layout.add_attribute<float>(2, false);
         vertex_layout.add_attribute<float>(4, false);
 
-        renderer.m_vb = 
-            renderer.m_va.bind_vertex_buffer(vertex_layout);
+        renderer.m_vb = renderer.m_va.bind_vertex_buffer(vertex_layout);
 
-
-        renderer.m_ib =
-            renderer.m_va.bind_index_buffer();
-
+        renderer.m_ib = renderer.m_va.bind_index_buffer();
 
         renderer.m_va.unbind_all();
 
-
-        renderer.m_shader =
-            GL::Shader::bind_new("./resources/shaders/simple_renderer.glsl");
+        renderer.m_shader = GL::Shader::bind_new("./resources/shaders/simple_renderer.glsl");
         renderer.m_shader.unbind();
 
-
         unsigned char pixels[] = { 0xFF, 0xFF, 0xFF, 0xFF };
-        renderer.m_default_texture =
-            new GL::Texture(
-                GL::Texture::new_texture(pixels, 
-                                         1, 
-                                         1, 
-                                         GL::PixelFormat::R8G8B8A8,
-                                         GL::TextureType::TWO_DIMS));
-
+        renderer.m_default_texture = new GL::Texture(
+            GL::Texture::new_texture(pixels,
+                                     1,
+                                     1,
+                                     GL::PixelFormat::R8G8B8A8,
+                                     GL::TextureType::TWO_DIMS));
 
         return renderer;
     }
@@ -150,7 +140,7 @@ public:
         Vector2 b = { dst_position.x + dst_size.x, dst_position.y + dst_size.y };
         Vector2 c = { dst_position.x + dst_size.x, dst_position.y };
         Vector2 d = dst_position;
-        
+
         float a_vertex[] = { V2X(a), 0.0f, 0.0f, V4X(color_tint) };
         float b_vertex[] = { V2X(b), 1.0f, 0.0f, V4X(color_tint) };
         float c_vertex[] = { V2X(c), 1.0f, 1.0f, V4X(color_tint) };
@@ -173,17 +163,17 @@ public:
         m_shader.bind();
 
         m_shader.set_uniform("u_texture_slot", 0);
-        
-        gl(DrawElements, GL_TRIANGLES, 
-                         m_ib->index_count(), GL_UNSIGNED_INT, 0);
+
+        gl(DrawElements, GL_TRIANGLES,
+           m_ib->index_count(), GL_UNSIGNED_INT, 0);
 
         m_vb->clear();
         m_ib->clear();
     }
 
     void draw_triangle(const Vector2& a,
-                       const Vector2& b, 
-                       const Vector2& c, 
+                       const Vector2& b,
+                       const Vector2& c,
                        const Vector4& color)
     {
         float a_vertex[] = { V2X(a), 0.0f, 0.0f, V4X(color) };
@@ -202,9 +192,9 @@ public:
         m_shader.bind();
 
         m_shader.set_uniform("u_texture_slot", 0);
-        
-        gl(DrawElements, GL_TRIANGLES, 
-                         m_ib->index_count(), GL_UNSIGNED_INT, 0);
+
+        gl(DrawElements, GL_TRIANGLES,
+           m_ib->index_count(), GL_UNSIGNED_INT, 0);
 
         m_vb->clear();
         m_ib->clear();
@@ -228,8 +218,7 @@ int main(void)
 
     int major_ver = glfwGetWindowAttrib(window, GLFW_CONTEXT_VERSION_MAJOR);
     int minor_ver = glfwGetWindowAttrib(window, GLFW_CONTEXT_VERSION_MINOR);
-    bool is_core = 
-        glfwGetWindowAttrib(window, GLFW_OPENGL_PROFILE) == GLFW_OPENGL_CORE_PROFILE;
+    bool is_core = glfwGetWindowAttrib(window, GLFW_OPENGL_PROFILE) == GLFW_OPENGL_CORE_PROFILE;
     std::cout << "[INFO] Context version: OpenGL "
               << major_ver << "." << minor_ver
               << (is_core ? " (Core Profile)" : "")
@@ -250,30 +239,27 @@ int main(void)
     gl(Enable, GL_BLEND);
     gl(BlendFunc, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    auto renderer = 
-        new Renderer(Renderer::new_renderer());
+    auto renderer = new Renderer(Renderer::new_renderer());
 
-    GL::Texture* texture = 
-        new GL::Texture(read_texture_from_file("./resources/textures/image.png"));
+    GL::Texture* texture = new GL::Texture(read_texture_from_file("./resources/textures/image.png"));
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         renderer->begin_drawing();
 
-        renderer->draw_triangle({-0.5f, -0.5f},
-                                {+0.5f, -0.5f},
-                                {+0.5f, +0.5f},
-                                {1.0f, 0.0f, 0.0f, 1.0f});
+        renderer->draw_triangle({ -0.5f, -0.5f },
+                                { +0.5f, -0.5f },
+                                { +0.5f, +0.5f },
+                                { 1.0f, 0.0f, 0.0f, 1.0f });
 
-        renderer->draw_texture(*texture, {0, 0}, {1, 1}, {1, 1, 1, 1});
-        renderer->draw_texture(*texture, {-1, -1}, {1, 1}, {1, 1, 1, 1});
+        renderer->draw_texture(*texture, { 0, 0 }, { 1, 1 }, { 1, 1, 1, 1 });
+        renderer->draw_texture(*texture, { -1, -1 }, { 1, 1 }, { 1, 1, 1, 1 });
 
         renderer->end_drawing();
         std::memcpy(prev_keys_pressed, keys_pressed, sizeof(keys_pressed));
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
 
     delete renderer;
     delete texture;

@@ -25,15 +25,17 @@ static PixelFormat gl_pixel_format(GL::PixelFormat format)
 {
     switch (format) {
 
-    case GL::PixelFormat::R8G8B8: return {
-        .format = GL_RGB,
-        .type = GL_UNSIGNED_BYTE,
-    };
+    case GL::PixelFormat::R8G8B8:
+        return {
+            .format = GL_RGB,
+            .type = GL_UNSIGNED_BYTE,
+        };
 
-    case GL::PixelFormat::R8G8B8A8: return {
-        .format = GL_RGBA,
-        .type = GL_UNSIGNED_BYTE,
-    };
+    case GL::PixelFormat::R8G8B8A8:
+        return {
+            .format = GL_RGBA,
+            .type = GL_UNSIGNED_BYTE,
+        };
 
     default:
         std::cerr << "FATAL ERROR: invalid pixel format: "
@@ -46,8 +48,10 @@ static GLenum gl_texture_type(GL::TextureType type)
 {
     switch (type) {
 
-    case GL::TextureType::TWO_DIMS: return GL_TEXTURE_2D;
-    case GL::TextureType::THREE_DIMS: return GL_TEXTURE_3D;
+    case GL::TextureType::TWO_DIMS:
+        return GL_TEXTURE_2D;
+    case GL::TextureType::THREE_DIMS:
+        return GL_TEXTURE_3D;
 
     default:
         std::cerr << "FATAL ERROR: invalid texture type: "
@@ -77,7 +81,7 @@ Texture Texture::new_texture(unsigned char* pixels, std::size_t width, std::size
     // Upload texture data
     auto format = gl_pixel_format(pixel_format);
     gl(TexImage2D, gl_texture_type(type), 0, GL_RGBA8, width, height,
-                   0, format.format, format.type, pixels);
+       0, format.format, format.type, pixels);
 
     gl(BindTexture, gl_texture_type(type), 0);
 

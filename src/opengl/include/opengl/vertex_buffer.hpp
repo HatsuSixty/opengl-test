@@ -1,9 +1,9 @@
 #pragma once
 
 #include <cstddef>
-#include <vector>
-#include <typeinfo>
 #include <iostream>
+#include <typeinfo>
+#include <vector>
 
 #include <GL/glew.h>
 
@@ -50,15 +50,15 @@ struct VertexAttribute {
 struct VertexLayout {
     std::vector<VertexAttribute> attributes;
     std::size_t stride = 0;
-    
+
     template <typename T>
     void add_attribute(std::size_t count, bool normalized)
     {
         auto component = VertexAttributeComponent::from_type<T>();
-        
-        VertexAttribute attribute = { 
-            .normalized = normalized, 
-            .component = component, 
+
+        VertexAttribute attribute = {
+            .normalized = normalized,
+            .component = component,
             .component_count = count,
             .offset = stride,
         };

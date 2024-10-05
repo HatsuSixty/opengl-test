@@ -8,7 +8,8 @@ namespace GL {
 
 void clear_errors()
 {
-    while (glGetError() != GL_NO_ERROR);
+    while (glGetError() != GL_NO_ERROR)
+        ;
 }
 
 void check_errors(const char* file_path, int line)

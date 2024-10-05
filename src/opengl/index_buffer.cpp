@@ -61,7 +61,7 @@ void IndexBuffer::push_index(GLuint index)
     }
 
     gl(BufferSubData, GL_ELEMENT_ARRAY_BUFFER, m_index_count * sizeof(unsigned int),
-                      added_index_count * sizeof(unsigned int), &index);
+       added_index_count * sizeof(unsigned int), &index);
 
     m_index_count += added_index_count;
 }
