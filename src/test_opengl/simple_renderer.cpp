@@ -51,9 +51,9 @@ static GL::Texture read_texture_from_file(const std::string& filepath)
     int components;
     unsigned char* pixels = stbi_load(filepath.c_str(), &width, &height, &components, 4);
 
-    auto texture = GL::Texture::new_texture(pixels, width, height,
-                                            GL::PixelFormat::R8G8B8A8,
-                                            GL::TextureType::TWO_DIMS);
+    auto texture = GL::Texture(pixels, width, height,
+                               GL::PixelFormat::R8G8B8A8,
+                               GL::TextureType::TWO_DIMS);
 
     stbi_image_free(pixels);
 
@@ -76,11 +76,11 @@ struct Vector4 {
 
 class Renderer {
 private:
-    GL::VertexArray m_va;
+    GL::VertexArray* m_va;
     GL::VertexBuffer* m_vb;
     GL::IndexBuffer* m_ib;
 
-    GL::Shader m_shader;
+    GL::Shader* m_shader;
     GL::Texture* m_default_texture;
 
 public:
@@ -88,29 +88,28 @@ public:
     {
         Renderer renderer;
 
-        renderer.m_va = GL::VertexArray::bind_new();
+        renderer.m_va = new GL::VertexArray();
+        renderer.m_va->bind();
 
         GL::VertexLayout vertex_layout;
         vertex_layout.add_attribute<float>(2, false);
         vertex_layout.add_attribute<float>(2, false);
         vertex_layout.add_attribute<float>(4, false);
 
-        renderer.m_vb = renderer.m_va.bind_vertex_buffer(vertex_layout);
+        renderer.m_vb = renderer.m_va->bind_vertex_buffer(vertex_layout);
 
-        renderer.m_ib = renderer.m_va.bind_index_buffer();
+        renderer.m_ib = renderer.m_va->bind_index_buffer();
 
-        renderer.m_va.unbind_all();
+        renderer.m_va->unbind_all();
 
-        renderer.m_shader = GL::Shader::bind_new("./resources/shaders/simple_renderer.glsl");
-        renderer.m_shader.unbind();
+        renderer.m_shader = new GL::Shader("./resources/shaders/simple_renderer.glsl");
 
         unsigned char pixels[] = { 0xFF, 0xFF, 0xFF, 0xFF };
-        renderer.m_default_texture = new GL::Texture(
-            GL::Texture::new_texture(pixels,
-                                     1,
-                                     1,
-                                     GL::PixelFormat::R8G8B8A8,
-                                     GL::TextureType::TWO_DIMS));
+        renderer.m_default_texture = new GL::Texture(pixels,
+                                                     1,
+                                                     1,
+                                                     GL::PixelFormat::R8G8B8A8,
+                                                     GL::TextureType::TWO_DIMS);
 
         return renderer;
     }
@@ -118,11 +117,13 @@ public:
     ~Renderer()
     {
         delete m_default_texture;
+        delete m_va;
+        delete m_shader;
     }
 
     void begin_drawing()
     {
-        m_va.bind();
+        m_va->bind();
         m_ib->bind();
         m_vb->bind();
     }
@@ -160,9 +161,9 @@ public:
         m_ib->push_index(0);
 
         texture.bind(0);
-        m_shader.bind();
+        m_shader->bind();
 
-        m_shader.set_uniform("u_texture_slot", 0);
+        m_shader->set_uniform("u_texture_slot", 0);
 
         gl(DrawElements, GL_TRIANGLES,
            m_ib->index_count(), GL_UNSIGNED_INT, 0);
@@ -189,9 +190,9 @@ public:
         m_ib->push_index(2);
 
         m_default_texture->bind(0);
-        m_shader.bind();
+        m_shader->bind();
 
-        m_shader.set_uniform("u_texture_slot", 0);
+        m_shader->set_uniform("u_texture_slot", 0);
 
         gl(DrawElements, GL_TRIANGLES,
            m_ib->index_count(), GL_UNSIGNED_INT, 0);

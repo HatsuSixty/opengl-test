@@ -6,14 +6,13 @@
 
 namespace GL {
 
-VertexBuffer VertexBuffer::bind_new(const VertexLayout& layout)
+VertexBuffer::VertexBuffer(const VertexLayout& layout)
 {
-    VertexBuffer vertex_buffer;
-    vertex_buffer.m_layout = layout;
+    m_layout = layout;
 
-    gl(GenBuffers, 1, &vertex_buffer.m_id);
+    gl(GenBuffers, 1, &m_id);
 
-    vertex_buffer.bind();
+    bind();
 
     for (std::size_t i = 0; i < layout.attributes.size(); ++i) {
         const VertexAttribute& attribute = layout.attributes[i];
@@ -26,7 +25,7 @@ VertexBuffer VertexBuffer::bind_new(const VertexLayout& layout)
            reinterpret_cast<GLvoid*>(attribute.offset));
     }
 
-    return vertex_buffer;
+    unbind();
 }
 
 VertexBuffer::~VertexBuffer()

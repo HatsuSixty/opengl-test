@@ -34,9 +34,9 @@ static GL::Texture read_texture_from_file(const std::string& filepath)
     int components;
     unsigned char* pixels = stbi_load(filepath.c_str(), &width, &height, &components, 4);
 
-    auto texture = GL::Texture::new_texture(pixels, width, height,
-                                            GL::PixelFormat::R8G8B8A8,
-                                            GL::TextureType::TWO_DIMS);
+    auto texture = GL::Texture(pixels, width, height,
+                               GL::PixelFormat::R8G8B8A8,
+                               GL::TextureType::TWO_DIMS);
 
     stbi_image_free(pixels);
 
@@ -104,7 +104,8 @@ int main()
      *   Setup vertexes   *
      *                    */
 
-    GL::VertexArray* va = new GL::VertexArray(GL::VertexArray::bind_new());
+    GL::VertexArray* va = new GL::VertexArray();
+    va->bind();
 
     float vertexes[] = {
         // x   y       tex coord
@@ -159,7 +160,8 @@ int main()
      *                  */
 
     std::string shader_path = "./resources/shaders/default.glsl";
-    GL::Shader* shader = new GL::Shader(GL::Shader::bind_new(shader_path));
+    GL::Shader* shader = new GL::Shader(GL::Shader(shader_path));
+    shader->bind();
     if (!shader->is_valid()) {
         return 1;
     }

@@ -20,8 +20,8 @@ private:
     TextureType m_type;
 
 public:
-    static Texture new_texture(unsigned char* pixels, std::size_t width, std::size_t height,
-                               PixelFormat pixel_format, TextureType type);
+    Texture(unsigned char* pixels, std::size_t width, std::size_t height,
+            PixelFormat pixel_format, TextureType type);
     ~Texture();
 
     void bind(GLuint slot) const;

@@ -17,7 +17,7 @@ private:
     int get_uniform_location(const std::string& name);
 
 public:
-    static Shader bind_new(const std::string& path);
+    Shader(const std::string& path);
 
     bool is_valid() const { return m_valid; };
 

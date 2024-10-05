@@ -6,15 +6,9 @@
 
 namespace GL {
 
-IndexBuffer IndexBuffer::bind_new()
+IndexBuffer::IndexBuffer()
 {
-    IndexBuffer index_buffer;
-
-    gl(GenBuffers, 1, &index_buffer.m_id);
-
-    index_buffer.bind();
-
-    return index_buffer;
+    gl(GenBuffers, 1, &m_id);
 }
 
 IndexBuffer::~IndexBuffer()

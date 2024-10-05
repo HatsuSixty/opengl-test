@@ -17,7 +17,7 @@ private:
     std::vector<IndexBuffer*> m_index_buffers;
 
 public:
-    static VertexArray bind_new();
+    VertexArray();
     ~VertexArray();
 
     void bind() const;

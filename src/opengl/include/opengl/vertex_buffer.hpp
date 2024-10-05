@@ -77,7 +77,7 @@ private:
     std::size_t m_capacity = 0;
 
 public:
-    static VertexBuffer bind_new(const VertexLayout& layout);
+    VertexBuffer(const VertexLayout& layout);
     ~VertexBuffer();
 
     void bind() const;

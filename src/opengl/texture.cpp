@@ -62,15 +62,14 @@ static GLenum gl_texture_type(GL::TextureType type)
 
 namespace GL {
 
-Texture Texture::new_texture(unsigned char* pixels, std::size_t width, std::size_t height,
-                             PixelFormat pixel_format, TextureType type)
+Texture::Texture(unsigned char* pixels, std::size_t width, std::size_t height,
+                 PixelFormat pixel_format, TextureType type)
 {
-    Texture texture;
-    texture.m_type = type;
+    m_type = type;
 
-    gl(GenTextures, 1, &texture.m_id);
+    gl(GenTextures, 1, &m_id);
 
-    gl(BindTexture, gl_texture_type(type), texture.m_id);
+    gl(BindTexture, gl_texture_type(type), m_id);
 
     // Set parameters
     gl(TexParameteri, gl_texture_type(type), GL_TEXTURE_MIN_FILTER, gl_minification_filter);
@@ -84,8 +83,6 @@ Texture Texture::new_texture(unsigned char* pixels, std::size_t width, std::size
        0, format.format, format.type, pixels);
 
     gl(BindTexture, gl_texture_type(type), 0);
-
-    return texture;
 }
 
 Texture::~Texture()

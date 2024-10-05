@@ -14,7 +14,7 @@ private:
     std::size_t m_index_capacity = 0;
 
 public:
-    static IndexBuffer bind_new();
+    IndexBuffer();
     ~IndexBuffer();
 
     void bind() const;

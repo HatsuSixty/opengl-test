@@ -4,15 +4,9 @@
 
 namespace GL {
 
-VertexArray VertexArray::bind_new()
+VertexArray::VertexArray()
 {
-    VertexArray vertex_array;
-
-    gl(GenVertexArrays, 1, &vertex_array.m_id);
-
-    vertex_array.bind();
-
-    return vertex_array;
+    gl(GenVertexArrays, 1, &m_id);
 }
 
 VertexArray::~VertexArray()
@@ -45,7 +39,8 @@ void VertexArray::unbind_all() const
 
 VertexBuffer* VertexArray::bind_vertex_buffer(const VertexLayout& layout)
 {
-    VertexBuffer* vertex_buffer = new VertexBuffer(VertexBuffer::bind_new(layout));
+    VertexBuffer* vertex_buffer = new VertexBuffer(layout);
+    vertex_buffer->bind();
 
     m_vertex_buffers.push_back(vertex_buffer);
 
@@ -54,7 +49,8 @@ VertexBuffer* VertexArray::bind_vertex_buffer(const VertexLayout& layout)
 
 IndexBuffer* VertexArray::bind_index_buffer()
 {
-    IndexBuffer* index_buffer = new IndexBuffer(IndexBuffer::bind_new());
+    IndexBuffer* index_buffer = new IndexBuffer();
+    index_buffer->bind();
 
     m_index_buffers.push_back(index_buffer);
 
