@@ -1,9 +1,9 @@
 #pragma once
 
-#define gl(name, ...)                         \
+#define gl(name, args)                        \
     do {                                      \
         GL::clear_errors();                   \
-        gl##name(__VA_ARGS__);                \
+        gl##name args;                        \
         GL::check_errors(__FILE__, __LINE__); \
     } while (0);
 

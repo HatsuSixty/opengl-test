@@ -8,22 +8,22 @@ namespace GL {
 
 IndexBuffer::IndexBuffer()
 {
-    gl(GenBuffers, 1, &m_id);
+    gl(GenBuffers, (1, &m_id));
 }
 
 IndexBuffer::~IndexBuffer()
 {
-    gl(DeleteBuffers, 1, &m_id);
+    gl(DeleteBuffers, (1, &m_id));
 }
 
 void IndexBuffer::bind() const
 {
-    gl(BindBuffer, GL_ELEMENT_ARRAY_BUFFER, m_id);
+    gl(BindBuffer, (GL_ELEMENT_ARRAY_BUFFER, m_id));
 }
 
 void IndexBuffer::unbind() const
 {
-    gl(BindBuffer, GL_ELEMENT_ARRAY_BUFFER, 0);
+    gl(BindBuffer, (GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
 void IndexBuffer::resize(std::size_t added_indices)
@@ -32,13 +32,13 @@ void IndexBuffer::resize(std::size_t added_indices)
 
     auto old_size = m_index_capacity * sizeof(unsigned int);
     auto old_data = new unsigned char[old_size]();
-    gl(GetBufferSubData, GL_ELEMENT_ARRAY_BUFFER, 0, old_size, old_data);
+    gl(GetBufferSubData, (GL_ELEMENT_ARRAY_BUFFER, 0, old_size, old_data));
 
     auto new_size = old_size + added_size;
     auto new_data = new unsigned char[new_size]();
     std::memcpy(new_data, old_data, old_size);
 
-    gl(BufferData, GL_ELEMENT_ARRAY_BUFFER, new_size, new_data, GL_DYNAMIC_DRAW);
+    gl(BufferData, (GL_ELEMENT_ARRAY_BUFFER, new_size, new_data, GL_DYNAMIC_DRAW));
 
     delete[] old_data;
     delete[] new_data;
@@ -54,8 +54,7 @@ void IndexBuffer::push_index(GLuint index)
         resize(added_index_count);
     }
 
-    gl(BufferSubData, GL_ELEMENT_ARRAY_BUFFER, m_index_count * sizeof(unsigned int),
-       added_index_count * sizeof(unsigned int), &index);
+    gl(BufferSubData, (GL_ELEMENT_ARRAY_BUFFER, m_index_count * sizeof(unsigned int), added_index_count * sizeof(unsigned int), &index));
 
     m_index_count += added_index_count;
 }

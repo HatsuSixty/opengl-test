@@ -29,7 +29,7 @@ bool is_key_just_pressed(int key)
 static void on_window_resize(GLFWwindow* window, int width, int height)
 {
     (void)window;
-    gl(Viewport, 0, 0, width, height);
+    gl(Viewport, (0, 0, width, height));
 }
 
 static void on_key(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -165,8 +165,7 @@ public:
 
         m_shader->set_uniform("u_texture_slot", 0);
 
-        gl(DrawElements, GL_TRIANGLES,
-           m_ib->index_count(), GL_UNSIGNED_INT, 0);
+        gl(DrawElements, (GL_TRIANGLES, m_ib->index_count(), GL_UNSIGNED_INT, 0));
 
         m_vb->clear();
         m_ib->clear();
@@ -194,8 +193,7 @@ public:
 
         m_shader->set_uniform("u_texture_slot", 0);
 
-        gl(DrawElements, GL_TRIANGLES,
-           m_ib->index_count(), GL_UNSIGNED_INT, 0);
+        gl(DrawElements, (GL_TRIANGLES, m_ib->index_count(), GL_UNSIGNED_INT, 0));
 
         m_vb->clear();
         m_ib->clear();
@@ -237,8 +235,8 @@ int main(void)
         return 1;
     }
 
-    gl(Enable, GL_BLEND);
-    gl(BlendFunc, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    gl(Enable, (GL_BLEND));
+    gl(BlendFunc, (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
     auto renderer = new Renderer(Renderer::new_renderer());
 

@@ -46,7 +46,7 @@ static GL::Texture read_texture_from_file(const std::string& filepath)
 static void on_window_resize(GLFWwindow* window, int width, int height)
 {
     (void)window;
-    gl(Viewport, 0, 0, width, height);
+    gl(Viewport, (0, 0, width, height));
 }
 
 static void on_key(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -97,8 +97,8 @@ int main()
               << (is_core ? " (Core Profile)" : "")
               << "\n";
 
-    gl(Enable, GL_BLEND);
-    gl(BlendFunc, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    gl(Enable, (GL_BLEND));
+    gl(BlendFunc, (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
     /*                    *
      *   Setup vertexes   *
@@ -175,7 +175,7 @@ int main()
      *               */
 
     while (!glfwWindowShouldClose(window)) {
-        gl(Clear, GL_COLOR_BUFFER_BIT);
+        gl(Clear, (GL_COLOR_BUFFER_BIT));
 
         vb->bind();
         if (is_key_just_pressed(GLFW_KEY_ENTER)) {
@@ -190,8 +190,7 @@ int main()
         shader->set_uniform("u_texture_slot", 0);
 
         va->bind();
-        gl(DrawElements, GL_TRIANGLES, ib->index_count(),
-           GL_UNSIGNED_INT, nullptr);
+        gl(DrawElements, (GL_TRIANGLES, ib->index_count(), GL_UNSIGNED_INT, nullptr));
 
         std::memcpy(prev_keys_pressed, keys_pressed, sizeof(keys_pressed));
         glfwSwapBuffers(window);

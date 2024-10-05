@@ -67,39 +67,38 @@ Texture::Texture(unsigned char* pixels, std::size_t width, std::size_t height,
 {
     m_type = type;
 
-    gl(GenTextures, 1, &m_id);
+    gl(GenTextures, (1, &m_id));
 
-    gl(BindTexture, gl_texture_type(type), m_id);
+    gl(BindTexture, (gl_texture_type(type), m_id));
 
     // Set parameters
-    gl(TexParameteri, gl_texture_type(type), GL_TEXTURE_MIN_FILTER, gl_minification_filter);
-    gl(TexParameteri, gl_texture_type(type), GL_TEXTURE_MAG_FILTER, gl_magnification_filter);
-    gl(TexParameteri, gl_texture_type(type), GL_TEXTURE_WRAP_S, gl_texture_wrap_s);
-    gl(TexParameteri, gl_texture_type(type), GL_TEXTURE_WRAP_T, gl_texture_wrap_t);
+    gl(TexParameteri, (gl_texture_type(type), GL_TEXTURE_MIN_FILTER, gl_minification_filter));
+    gl(TexParameteri, (gl_texture_type(type), GL_TEXTURE_MAG_FILTER, gl_magnification_filter));
+    gl(TexParameteri, (gl_texture_type(type), GL_TEXTURE_WRAP_S, gl_texture_wrap_s));
+    gl(TexParameteri, (gl_texture_type(type), GL_TEXTURE_WRAP_T, gl_texture_wrap_t));
 
     // Upload texture data
     auto format = gl_pixel_format(pixel_format);
-    gl(TexImage2D, gl_texture_type(type), 0, GL_RGBA8, width, height,
-       0, format.format, format.type, pixels);
+    gl(TexImage2D, (gl_texture_type(type), 0, GL_RGBA8, width, height, 0, format.format, format.type, pixels));
 
-    gl(BindTexture, gl_texture_type(type), 0);
+    gl(BindTexture, (gl_texture_type(type), 0));
 }
 
 Texture::~Texture()
 {
-    gl(DeleteTextures, 1, &m_id);
+    gl(DeleteTextures, (1, &m_id));
 }
 
 void Texture::bind(GLuint slot) const
 {
-    gl(ActiveTexture, GL_TEXTURE0 + slot);
-    gl(BindTexture, gl_texture_type(m_type), m_id);
+    gl(ActiveTexture, (GL_TEXTURE0 + slot));
+    gl(BindTexture, (gl_texture_type(m_type), m_id));
 }
 
 void Texture::unbind() const
 {
-    gl(ActiveTexture, GL_TEXTURE0);
-    gl(BindTexture, gl_texture_type(m_type), 0);
+    gl(ActiveTexture, (GL_TEXTURE0));
+    gl(BindTexture, (gl_texture_type(m_type), 0));
 }
 
 void set_magnification_filter(GLenum filter) { gl_magnification_filter = filter; }

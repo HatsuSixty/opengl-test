@@ -6,7 +6,7 @@ namespace GL {
 
 VertexArray::VertexArray()
 {
-    gl(GenVertexArrays, 1, &m_id);
+    gl(GenVertexArrays, (1, &m_id));
 }
 
 VertexArray::~VertexArray()
@@ -22,19 +22,19 @@ VertexArray::~VertexArray()
 
 void VertexArray::bind() const
 {
-    gl(BindVertexArray, m_id);
+    gl(BindVertexArray, (m_id));
 }
 
 void VertexArray::unbind() const
 {
-    gl(BindVertexArray, 0);
+    gl(BindVertexArray, (0));
 }
 
 void VertexArray::unbind_all() const
 {
     unbind();
-    gl(BindBuffer, GL_ARRAY_BUFFER, 0);
-    gl(BindBuffer, GL_ELEMENT_ARRAY_BUFFER, 0);
+    gl(BindBuffer, (GL_ARRAY_BUFFER, 0));
+    gl(BindBuffer, (GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
 VertexBuffer* VertexArray::bind_vertex_buffer(const VertexLayout& layout)

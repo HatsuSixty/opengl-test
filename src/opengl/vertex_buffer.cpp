@@ -10,19 +10,15 @@ VertexBuffer::VertexBuffer(const VertexLayout& layout)
 {
     m_layout = layout;
 
-    gl(GenBuffers, 1, &m_id);
+    gl(GenBuffers, (1, &m_id));
 
     bind();
 
     for (std::size_t i = 0; i < layout.attributes.size(); ++i) {
         const VertexAttribute& attribute = layout.attributes[i];
 
-        gl(EnableVertexAttribArray, i);
-        gl(VertexAttribPointer, i, attribute.component_count,
-           attribute.component.type,
-           attribute.normalized,
-           layout.stride,
-           reinterpret_cast<GLvoid*>(attribute.offset));
+        gl(EnableVertexAttribArray, (i));
+        gl(VertexAttribPointer, (i, attribute.component_count, attribute.component.type, attribute.normalized, layout.stride, reinterpret_cast<GLvoid*>(attribute.offset)));
     }
 
     unbind();
@@ -30,30 +26,30 @@ VertexBuffer::VertexBuffer(const VertexLayout& layout)
 
 VertexBuffer::~VertexBuffer()
 {
-    gl(DeleteBuffers, 1, &m_id);
+    gl(DeleteBuffers, (1, &m_id));
 }
 
 void VertexBuffer::bind() const
 {
-    gl(BindBuffer, GL_ARRAY_BUFFER, m_id);
+    gl(BindBuffer, (GL_ARRAY_BUFFER, m_id));
 }
 
 void VertexBuffer::unbind() const
 {
-    gl(BindBuffer, GL_ARRAY_BUFFER, 0);
+    gl(BindBuffer, (GL_ARRAY_BUFFER, 0));
 }
 
 void VertexBuffer::resize(std::size_t added_size)
 {
     auto old_size = m_capacity;
     auto old_data = new unsigned char[old_size]();
-    gl(GetBufferSubData, GL_ARRAY_BUFFER, 0, old_size, old_data);
+    gl(GetBufferSubData, (GL_ARRAY_BUFFER, 0, old_size, old_data));
 
     auto new_size = old_size + added_size;
     auto new_data = new unsigned char[new_size]();
     std::memcpy(new_data, old_data, old_size);
 
-    gl(BufferData, GL_ARRAY_BUFFER, new_size, new_data, GL_DYNAMIC_DRAW);
+    gl(BufferData, (GL_ARRAY_BUFFER, new_size, new_data, GL_DYNAMIC_DRAW));
 
     delete[] old_data;
     delete[] new_data;
@@ -73,7 +69,7 @@ void VertexBuffer::push_vertex(const void* data, std::size_t data_size)
         resize(data_size);
     }
 
-    gl(BufferSubData, GL_ARRAY_BUFFER, m_size, data_size, data);
+    gl(BufferSubData, (GL_ARRAY_BUFFER, m_size, data_size, data));
 
     m_size += data_size;
 }
@@ -90,8 +86,7 @@ void VertexBuffer::set_attribute(int vertex_index, int attribute_index,
         throw;
     }
 
-    gl(BufferSubData, GL_ARRAY_BUFFER, vertex_index * m_layout.stride + attribute.offset,
-       data_size, data);
+    gl(BufferSubData, (GL_ARRAY_BUFFER, vertex_index * m_layout.stride + attribute.offset, data_size, data));
 }
 
 }

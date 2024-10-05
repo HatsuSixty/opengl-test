@@ -52,25 +52,25 @@ static GLuint compile_shader(GLenum type, const std::string& source)
     gl_call(id = glCreateShader(type));
 
     const char* c_source = source.c_str();
-    gl(ShaderSource, id, 1, &c_source, nullptr);
-    gl(CompileShader, id);
+    gl(ShaderSource, (id, 1, &c_source, nullptr));
+    gl(CompileShader, (id));
 
     int result;
-    gl(GetShaderiv, id, GL_COMPILE_STATUS, &result);
+    gl(GetShaderiv, (id, GL_COMPILE_STATUS, &result));
 
     if (result == GL_FALSE) {
         int error_length;
-        gl(GetShaderiv, id, GL_INFO_LOG_LENGTH, &error_length);
+        gl(GetShaderiv, (id, GL_INFO_LOG_LENGTH, &error_length));
 
         char* error = (char*)alloca(error_length);
-        gl(GetShaderInfoLog, id, error_length, &error_length, error);
+        gl(GetShaderInfoLog, (id, error_length, &error_length, error));
 
         const char* shader_type = type == GL_VERTEX_SHADER ? "vertex" : "fragment";
 
         std::cerr << "ERROR: " << shader_type << " shader compilation: "
                   << error;
 
-        gl(DeleteShader, id);
+        gl(DeleteShader, (id));
 
         return 0;
     }
@@ -103,55 +103,55 @@ Shader::Shader(const std::string& path)
     GLuint vert_shader = compile_shader(GL_VERTEX_SHADER,
                                         shader_sources.vertex);
     if (vert_shader == 0) {
-        gl(DeleteProgram, m_id);
+        gl(DeleteProgram, (m_id));
         m_valid = false;
     }
 
     GLuint frag_shader = compile_shader(GL_FRAGMENT_SHADER,
                                         shader_sources.fragment);
     if (frag_shader == 0) {
-        gl(DeleteProgram, m_id);
+        gl(DeleteProgram, (m_id));
         m_valid = false;
     }
 
-    gl(AttachShader, m_id, vert_shader);
-    gl(AttachShader, m_id, frag_shader);
+    gl(AttachShader, (m_id, vert_shader));
+    gl(AttachShader, (m_id, frag_shader));
 
-    gl(LinkProgram, m_id);
-    gl(ValidateProgram, m_id);
+    gl(LinkProgram, (m_id));
+    gl(ValidateProgram, (m_id));
 
-    gl(DeleteShader, vert_shader);
-    gl(DeleteShader, frag_shader);
+    gl(DeleteShader, (vert_shader));
+    gl(DeleteShader, (frag_shader));
 }
 
 void Shader::bind() const
 {
-    gl(UseProgram, m_id);
+    gl(UseProgram, (m_id));
 }
 
 void Shader::unbind() const
 {
-    gl(UseProgram, 0);
+    gl(UseProgram, (0));
 }
 
 void Shader::set_uniform(const std::string& name,
                          float x, float y, float z, float w)
 {
     int location = get_uniform_location(name);
-    gl(Uniform4f, location, x, y, z, w);
+    gl(Uniform4f, (location, x, y, z, w));
 }
 
 void Shader::set_uniform(const std::string& name,
                          float x, float y, float z)
 {
     int location = get_uniform_location(name);
-    gl(Uniform3f, location, x, y, z);
+    gl(Uniform3f, (location, x, y, z));
 }
 
 void Shader::set_uniform(const std::string& name, int x)
 {
     int location = get_uniform_location(name);
-    gl(Uniform1i, location, x);
+    gl(Uniform1i, (location, x));
 }
 
 }
